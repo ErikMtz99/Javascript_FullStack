@@ -1,0 +1,31 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate server
+
+    server-->>browser: 200 OK. the html file
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: 200 OK. the css file
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    activate server
+    server-->>browser: 200 OK. the JavaScript file
+    deactivate server
+
+    Note right of browser: Write note and click Save.
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+
+    Note right of browser: JSON data sent - content and date
+
+    server-->>browser: 201 Created. Updated notes from data.json 
+    deactivate server
+
+    Note right of browser: The browser executes the callback function that renders the notes
