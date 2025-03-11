@@ -42,11 +42,15 @@ const App = () => {
       <Button handleClick={() => setNeutral(neutral + 1)} text='neutral' />
       <Button handleClick={() => setBad(bad + 1)} text='bad' />
       <h1>Statistics</h1>
-      <StatisticsLine text="good" value = {good} />
-      <StatisticsLine text="neutral" value = {neutral} />
-      <StatisticsLine text="bad" value = {bad} />
-      <StatisticsLine text="average" value = {(good - bad) / (good + neutral + bad)} />
-      <StatisticsLine text="positive" value = {good / (good + neutral + bad) * 100} />
+      <table style={{border: '1px solid black'}}>
+        <tbody>
+        <tr ><td><StatisticsLine text="good" value = {good} /></td></tr>
+        <tr><td><StatisticsLine text="neutral" value = {neutral} /></td></tr>
+        <tr><td><StatisticsLine text="bad" value = {bad} /></td></tr>
+        <tr><td><StatisticsLine text="average" value = {(good - bad) / (good + neutral + bad)} /></td></tr>
+        <tr><td><StatisticsLine text="positive" value = {good / (good + neutral + bad) * 100} /></td></tr>
+        </tbody>
+      </table>
     </div>
   )
 }
