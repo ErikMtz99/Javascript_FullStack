@@ -1,29 +1,21 @@
 import { useState } from 'react'
 
-const Button = ({ handleClick, text }) => (
-  <button onClick={handleClick}>
-    {text}
-  </button>
-)
-
-const StatisticsLine = (props) => {
-  const text = props.text
-  const value = props.value
-  return(
-    <p>{text}: {value}</p>
-  )
-}
 
 const RandomNumber = (max) => 
 {
   return(Math.floor(Math.random() * max))
 }
 
+const handleVotes = (index, votes, setVotes) =>
+{
+  const copyVotes = [...votes]
+  copyVotes[index] += 1
+  setVotes(copyVotes)
+}
 const App = () => {
-  // guarda los clics de cada botón en su propio estado
-  const [good, setGood] = useState(0)
-  const [neutral, setNeutral] = useState(0)
-  const [bad, setBad] = useState(0)
+  
+  const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState([0, 0, 0, 0, 0, 0, 0, 0])
 
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -36,27 +28,15 @@ const App = () => {
     'The only way to go fast, is to go well.'
   ]
 
-  const [selected, setSelected] = useState(0)
+  let rand_num = RandomNumber(anecdotes.length);
 
   return (
     <div>
       {anecdotes[selected]}
       <br />
-      <Button handleClick = {() => setSelected(RandomNumber(anecdotes.length))} text="Show Random Anecdote"/>
-      <h1>Give Feedback </h1>
-      <Button handleClick={() => setGood(good + 1)} text='good' />
-      <Button handleClick={() => setNeutral(neutral + 1)} text='neutral' />
-      <Button handleClick={() => setBad(bad + 1)} text='bad' />
-      <h1>Statistics</h1>
-      <table style={{border: '1px solid black'}}>
-        <tbody>
-        <tr ><td><StatisticsLine text="good" value = {good} /></td></tr>
-        <tr><td><StatisticsLine text="neutral" value = {neutral} /></td></tr>
-        <tr><td><StatisticsLine text="bad" value = {bad} /></td></tr>
-        <tr><td><StatisticsLine text="average" value = {(good - bad) / (good + neutral + bad)} /></td></tr>
-        <tr><td><StatisticsLine text="positive" value = {good / (good + neutral + bad) * 100} /></td></tr>
-        </tbody>
-      </table>
+      <button onClick={() => setSelected(rand_num)}>New Anecdote</button>
+      <button onClick={() => handleVotes(selected, votes, setVotes)}>Vote</button>
+      <p>Votes: {votes[selected]}</p>
     </div>
   )
 }
