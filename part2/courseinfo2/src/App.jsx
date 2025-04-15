@@ -6,15 +6,15 @@ const Header = (props) => {
       <h1>{props.course.name}</h1>
     </>
   )
-}
+};
 
 const Part = (props) => {
   return (
     <>
       <p>{props.part} {props.exercise}</p>
     </>
-  )
-}
+  );
+};
 
 const Content = (props) => {
   return ( 
@@ -24,24 +24,27 @@ const Content = (props) => {
       ))}
     </>
   );
-}
+};
 
 const Total = (props) => {
+  let sum = 0;
+  props.course.parts.forEach(item => {sum = sum + item.exercises; } );
   return (
     <>
-      <p>Number of exercises: {props.course.parts[0].exercises + props.course.parts[1].exercises + props.course.parts[2].exercises}</p>
+      <p>Number of exercises: {sum}</p>
     </>
-  )
-}
+  );
+};
 
 const Course = (props) => {
   return(
     <div>
       <Header course={props.course} />
       <Content course={props.course} />
+      <Total course={props.course} />
     </div>
-  )
-}
+  );
+};
 
 const App = () => {
   const course = {
@@ -50,7 +53,7 @@ const App = () => {
     parts: [
       {
         name: 'Fundamentals of React',
-        exercises: 10,
+        exercises: 15,
         id: 1
       },
       {
@@ -64,13 +67,13 @@ const App = () => {
         id: 3
       }
     ]
-  }
+  };
 
   return(
     <div>
       <Course course={course} />
     </div> 
-    )
+    );
 }
 
-export default App
+export default App;
