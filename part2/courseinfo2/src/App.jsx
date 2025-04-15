@@ -27,11 +27,17 @@ const Content = (props) => {
 };
 
 const Total = (props) => {
-  let sum = 0;
-  props.course.parts.forEach(item => {sum = sum + item.exercises; } );
+  // Using reduce to sum the exercises
+  // let total = props.course.parts.reduce(
+  //   (accumulator, currentValue) => {
+  //     return accumulator + currentValue.exercises;
+  //   },
+  //   0
+  // )
+  let total = props.course.parts.reduce((accumulator, currentValue) => accumulator + currentValue.exercises, 0);
   return (
     <>
-      <p>Number of exercises: {sum}</p>
+      <p>Number of exercises: {total}</p>
     </>
   );
 };
@@ -53,7 +59,7 @@ const App = () => {
     parts: [
       {
         name: 'Fundamentals of React',
-        exercises: 15,
+        exercises: 25,
         id: 1
       },
       {
