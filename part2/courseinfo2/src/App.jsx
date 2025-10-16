@@ -1,50 +1,20 @@
 import Course from './components/Course'
+import { useState } from 'react'
 
-const App = () => {
-  const courses = [
-    {
-      name: 'Half Stack application development',
-      id: 1,
-      parts: [
-        {
-          name: 'Fundamentals of React',
-          exercises: 10,
-          id: 1
-        },
-        {
-          name: 'Using props to pass data',
-          exercises: 7,
-          id: 2
-        },
-        {
-          name: 'State of a component',
-          exercises: 14,
-          id: 3
-        },
-        {
-          name: 'Redux',
-          exercises: 11,
-          id: 4
-        }
-      ]
-    }, 
-    {
-      name: 'Node.js',
-      id: 2,
-      parts: [
-        {
-          name: 'Routing',
-          exercises: 3,
-          id: 1
-        },
-        {
-          name: 'Middlewares',
-          exercises: 7,
-          id: 2
-        }
-      ]
-    }
-  ]
+const App = (props) => {
+  const [actualCourses, setCourse] = useState(props.courses)
+  const [newCourse, setNewCourse] = useState(' a new Course...')
+
+  const handleCourseChange = (event) => {
+    console.log(event.target.value)
+    setNewCourse(event.target.value)
+  }
+
+  const addCourse = (event) => {
+    event.preventDefault()
+    setCourse(actualCourses.concat({name: newCourse, id:actualCourses.at(-1).id++, parts: []}))
+    console.log('button clicked', event.target)
+  }
 
   return (
     // <div>
@@ -52,9 +22,14 @@ const App = () => {
     // </div>
     <div>
       <h1> Courses </h1>
-      {courses.map(course => (
+      {actualCourses.map(course => (
         <Course key={course.id} course={course} />
       ))}
+
+      <form onSubmit={addCourse}>
+        <input value={newCourse} onChange={handleCourseChange}/>
+        <button type='submit'>save</button>
+      </form>
     </div>
   )
 }

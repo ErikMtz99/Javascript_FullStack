@@ -37,7 +37,9 @@ const App = () => {
   ]
 
   let rand_num = RandomNumber(anecdotes.length);
-
+  console.log(rand_num);
+  
+  
   return (
     <div>
       <h1>Anecdote of the day: </h1>
