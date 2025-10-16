@@ -6,9 +6,10 @@ const phoneNumbersArray = [
 ]
 
 const App = () => {
-  const [phoneNumbers, setPhoneNumbers] = useState(phoneNumbersArray) //[ { id: 0, name: 'Arto Hellas', phone: 0, }]
+  const [phoneNumbers, setPhoneNumbers] = useState(phoneNumbersArray)
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('0000000000')
+  let foundPhoneNumbers = []
 
   const addNewEntry = (event) => {
     event.preventDefault();
@@ -31,10 +32,29 @@ const App = () => {
     setNewNumber(event.target.value);
     console.log('number ' + event.target.value);
   }
+  const handleFilterName = (event) => {
+    setNewName(event.target.value);
+    console.log('filtering name  ' + event.target.value);
+  }
+
+  const FilterPerson = () => {
+    foundPhoneNumbers = phoneNumbers.filter(value => (value.name).toLowerCase() === newName.toLowerCase())
+    return(
+      <div>
+        {foundPhoneNumbers.map(entry => <li key={entry.id}>{entry.name} : {entry.phone}</li>)}
+      </div>
+    )
+  }
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+      <h2> Search phonebook by name: </h2>
+      <div>
+        Enter name to search: <input value={newName} onChange={handleFilterName}/>
+        <FilterPerson> List: </FilterPerson>
+      </div>
+      <h2> Add new: </h2>
       <form onSubmit={addNewEntry} value>
         <div>
           name: <input value={newName} onChange={handleNewName}/>
@@ -42,7 +62,6 @@ const App = () => {
         <div>
           number: <input value={newNumber} onChange={handleNewNumber}/>
         </div>
-        <div>debug: {newName} -- {newNumber} </div>
         <div>
           <button type="submit">add</button>
         </div>
