@@ -11,8 +11,15 @@ const App = () => {
 
   const addNewEntry = (event) => {
     event.preventDefault();
-    console.log('submiting new phone...')
-    setPhoneNumbers(phoneNumbers.concat({id:phoneNumbers.length + 1, name:newName, phone:0}))
+    if((phoneNumbers.filter((number) => number.name === newName)).length === 0) // if newName is not in array (new array lenght is zero because there is no match)
+    {
+      console.log('submiting new phone...')
+      setPhoneNumbers(phoneNumbers.concat({id:phoneNumbers.length + 1, name:newName, phone:0}))
+    }
+    else { // if newName is already in array
+      alert(`${newName} is already added to phonebook`)
+    }
+    
   }
 
   const handleNewEntry = (event) => {
