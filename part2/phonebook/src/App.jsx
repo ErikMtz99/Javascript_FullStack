@@ -8,13 +8,14 @@ const phoneNumbersArray = [
 const App = () => {
   const [phoneNumbers, setPhoneNumbers] = useState(phoneNumbersArray) //[ { id: 0, name: 'Arto Hellas', phone: 0, }]
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('0000000000')
 
   const addNewEntry = (event) => {
     event.preventDefault();
     if((phoneNumbers.filter((number) => number.name === newName)).length === 0) // if newName is not in array (new array lenght is zero because there is no match)
     {
-      console.log('submiting new phone...')
-      setPhoneNumbers(phoneNumbers.concat({id:phoneNumbers.length + 1, name:newName, phone:0}))
+      console.log('submiting new person...')
+      setPhoneNumbers(phoneNumbers.concat({id:phoneNumbers.length + 1, name:newName, phone:newNumber}))
     }
     else { // if newName is already in array
       alert(`${newName} is already added to phonebook`)
@@ -22,9 +23,13 @@ const App = () => {
     
   }
 
-  const handleNewEntry = (event) => {
+  const handleNewName = (event) => {
     setNewName(event.target.value);
-    console.log(event.target.value);
+    console.log('name ' + event.target.value);
+  }
+  const handleNewNumber = (event) => {
+    setNewNumber(event.target.value);
+    console.log('number ' + event.target.value);
   }
 
   return (
@@ -32,9 +37,12 @@ const App = () => {
       <h2>Phonebook</h2>
       <form onSubmit={addNewEntry} value>
         <div>
-          name: <input value={newName} onChange={handleNewEntry}/>
+          name: <input value={newName} onChange={handleNewName}/>
         </div>
-        <div>debug: {newName}</div>
+        <div>
+          number: <input value={newNumber} onChange={handleNewNumber}/>
+        </div>
+        <div>debug: {newName} -- {newNumber} </div>
         <div>
           <button type="submit">add</button>
         </div>
