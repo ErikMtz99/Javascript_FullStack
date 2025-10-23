@@ -1,9 +1,5 @@
-import { useState } from 'react'
-
-const phoneNumbersArray = [
-  {id: 1, name: 'Erik', phone: 1111111111 }, 
-  {id: 2, name: 'Juan', phone: 1234567890 },
-]
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 const FilterPerson = (props) => {
     let foundPhoneNumbers = []
@@ -11,7 +7,7 @@ const FilterPerson = (props) => {
     return(
       <div>
         Enter name to search: <input value={props.newName} onChange={props.filterFunc}/>
-        {foundPhoneNumbers.map(entry => <li key={entry.id}>{entry.name} : {entry.phone}</li>)}
+        {foundPhoneNumbers.map(entry => <li key={entry.id}>{entry.name} : {entry.number}</li>)}
       </div>
     )
   }
@@ -37,15 +33,20 @@ const PersonForm = (props) => {
   const ShowPersons = (props) => {
     return (
       <div>
-        {props.phoneNumbers.map(entry => <li key={entry.id}>{entry.name} : {entry.phone}</li>)}
+        {props.phoneNumbers.map(entry => <li key={entry.id}>{entry.name} : {entry.number}</li>)}
       </div>
     )
   }
 
 const App = () => {
-  const [phoneNumbers, setPhoneNumbers] = useState(phoneNumbersArray)
+  const [phoneNumbers, setPhoneNumbers] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('0000000000')
+  
+  useEffect(() => {
+    console.log('effect')
+    axios.get('http://localhost:3001/persons').then(response => {setPhoneNumbers(response.data)}) 
+  }, []) //effect only run after 1st component's render
   
 
   const addNewEntry = (event) => {
@@ -53,7 +54,7 @@ const App = () => {
     if((phoneNumbers.filter((number) => number.name.toLowerCase() === newName.toLowerCase())).length === 0) // if newName is not in array (new array lenght is zero because there is no match)
     {
       console.log('submiting new person...')
-      setPhoneNumbers(phoneNumbers.concat({id:phoneNumbers.length + 1, name:newName, phone:newNumber}))
+      setPhoneNumbers(phoneNumbers.concat({id:phoneNumbers.length + 1, name:newName, number:newNumber}))
     }
     else { // if newName is already in array
       alert(`${newName} is already added to phonebook`)
