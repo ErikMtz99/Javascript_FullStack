@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import personsService from './services/persons'
 
 const FilterPerson = (props) => {
     let foundPhoneNumbers = []
@@ -45,16 +46,28 @@ const App = () => {
   
   useEffect(() => {
     console.log('effect')
-    axios.get('http://localhost:3001/persons').then(response => {setPhoneNumbers(response.data)}) 
+    personsService.getAll().then((response) => {setPhoneNumbers(response)})
+    //axios.get('http://localhost:3001/persons').then(response => {setPhoneNumbers(response.data)}) 
   }, []) //effect only run after 1st component's render
   
 
   const addNewEntry = (event) => {
     event.preventDefault();
+    const personObject = {
+      id:phoneNumbers.length + 1,
+      name:newName,
+      number:newNumber,
+    }
+
     if((phoneNumbers.filter((number) => number.name.toLowerCase() === newName.toLowerCase())).length === 0) // if newName is not in array (new array lenght is zero because there is no match)
     {
       console.log('submiting new person...')
-      setPhoneNumbers(phoneNumbers.concat({id:phoneNumbers.length + 1, name:newName, number:newNumber}))
+      personsService.create(personObject).then((returnedPerson) => {
+        setPhoneNumbers(phoneNumbers.concat(returnedPerson))
+        setNewName('')
+        setNewNumber('')
+      })
+      
     }
     else { // if newName is already in array
       alert(`${newName} is already added to phonebook`)
