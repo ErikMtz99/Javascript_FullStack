@@ -34,7 +34,11 @@ const PersonForm = (props) => {
   const ShowPersons = (props) => {
     return (
       <div>
-        {props.phoneNumbers.map(entry => <li key={entry.id}>{entry.name} : {entry.number}</li>)}
+        {props.phoneNumbers.map(entry => 
+          <li key={entry.id}>{entry.name} : {entry.number}
+            <button onClick={() => props.deletePerson(entry.id, entry.name)}>delete</button> 
+          </li>)}
+
       </div>
     )
   }
@@ -51,7 +55,7 @@ const App = () => {
   }, []) //effect only run after 1st component's render
   
 
-  const addNewEntry = (event) => {
+  const addPerson = (event) => {
     event.preventDefault();
     const personObject = {
       id:phoneNumbers.length + 1,
@@ -75,6 +79,15 @@ const App = () => {
     
   }
 
+  const deletePerson = (id, name) => {
+    if(confirm(`Do you want to delete ${name} ${id}?`)){
+      personsService.deleteEntry(id).then(() => {
+        setPhoneNumbers(phoneNumbers.filter((person) => person.id !== id))
+        alert(`${name} has been deleted from phonebook`)
+      })
+    }
+  }
+
   const handleNewName = (event) => {
     setNewName(event.target.value);
     console.log('name ' + event.target.value);
@@ -96,10 +109,10 @@ const App = () => {
       <FilterPerson phoneNumbers = {phoneNumbers} newName = {newName} filterFunc = {handleFilterName}/>
 
       <h2> Add new: </h2>
-      <PersonForm newName = {newName} newNumber = {newNumber} handleNewNumber = {handleNewNumber} handleNewName ={handleNewName} addNewEntry = {addNewEntry}/>
+      <PersonForm newName = {newName} newNumber = {newNumber} handleNewNumber = {handleNewNumber} handleNewName ={handleNewName} addNewEntry = {addPerson}/>
 
       <h2>Numbers</h2>
-      <ShowPersons phoneNumbers={phoneNumbers}/>
+      <ShowPersons phoneNumbers={phoneNumbers} deletePerson={deletePerson}/>
 
     </div>
   )
