@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import personsService from './services/persons'
+import persons from './services/persons'
 
 const FilterPerson = (props) => {
     let foundPhoneNumbers = []
@@ -74,13 +75,22 @@ const App = () => {
       
     }
     else { // if newName is already in array
-      alert(`${newName} is already added to phonebook`)
+      const existingPerson = phoneNumbers.find(p => p.name.toLowerCase() === newName.toLowerCase())
+      if(confirm(`${newName} is already added to phonebook, do you want to change phonenumber?`)){
+
+        personsService.update(existingPerson.id, {id:existingPerson.id, name:existingPerson.name, number:newNumber})
+        .then((returnedPerson) => {
+          setPhoneNumbers(phoneNumbers.map(p => p.id !== existingPerson.id ? p : returnedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
+      }
     }
     
   }
 
   const deletePerson = (id, name) => {
-    if(confirm(`Do you want to delete ${name} ${id}?`)){
+    if(confirm(`Do you want to delete ${name} ?`)){
       personsService.deleteEntry(id).then(() => {
         setPhoneNumbers(phoneNumbers.filter((person) => person.id !== id))
         alert(`${name} has been deleted from phonebook`)
