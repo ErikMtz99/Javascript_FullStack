@@ -48,6 +48,7 @@ const App = () => {
   const [phoneNumbers, setPhoneNumbers] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('0000000000')
+  const [successMessage, setSuccessMessage] = useState(null)
   
   useEffect(() => {
     console.log('effect')
@@ -55,11 +56,22 @@ const App = () => {
     //axios.get('http://localhost:3001/persons').then(response => {setPhoneNumbers(response.data)}) 
   }, []) //effect only run after 1st component's render
   
+  const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className='success'>
+      {message}
+    </div>
+  )
+  }
 
   const addPerson = (event) => {
     event.preventDefault();
     const personObject = {
-      id:phoneNumbers.length + 1,
+      id:String(phoneNumbers.length + 1),
       name:newName,
       number:newNumber,
     }
@@ -72,6 +84,8 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       })
+      setSuccessMessage(`'${newName}' successfully added! `)
+      setTimeout(() => {setSuccessMessage(null)}, 5000)
       
     }
     else { // if newName is already in array
@@ -84,6 +98,8 @@ const App = () => {
           setNewName('')
           setNewNumber('')
         })
+        setSuccessMessage(`'${newName}' successfully updated! `)
+        setTimeout(() => {setSuccessMessage(null)}, 5000)
       }
     }
     
@@ -118,6 +134,7 @@ const App = () => {
       <h2> Search phonebook by name: </h2>
       <FilterPerson phoneNumbers = {phoneNumbers} newName = {newName} filterFunc = {handleFilterName}/>
 
+      <Notification message={successMessage} />
       <h2> Add new: </h2>
       <PersonForm newName = {newName} newNumber = {newNumber} handleNewNumber = {handleNewNumber} handleNewName ={handleNewName} addNewEntry = {addPerson}/>
 
