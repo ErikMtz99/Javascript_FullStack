@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/api/persons' //Last changes were from exercise 3.17
+const baseUrl = '/api/persons' //exercise 3.11
 
 /*
 const getAll = () => {

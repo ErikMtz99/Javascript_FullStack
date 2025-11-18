@@ -46,7 +46,7 @@ const PersonForm = (props) => {
 
 const App = () => {
   const [phoneNumbers, setPhoneNumbers] = useState([])
-  const [newName, setNewName] = useState('')
+  const [newName, setNewName] = useState(' ')
   const [newNumber, setNewNumber] = useState('0000000000')
   const [successMessage, setSuccessMessage] = useState(null)
   
@@ -81,8 +81,8 @@ const App = () => {
       console.log('submiting new person...')
       personsService.create(personObject).then((returnedPerson) => {
         setPhoneNumbers(phoneNumbers.concat(returnedPerson))
-        setNewName('')
-        setNewNumber('')
+        setNewName(' ')
+        setNewNumber(' ')
       })
       setSuccessMessage(`'${newName}' successfully added! `)
       setTimeout(() => {setSuccessMessage(null)}, 5000)
@@ -95,8 +95,8 @@ const App = () => {
         personsService.update(existingPerson.id, {id:existingPerson.id, name:existingPerson.name, number:newNumber})
         .then((returnedPerson) => {
           setPhoneNumbers(phoneNumbers.map(p => p.id !== existingPerson.id ? p : returnedPerson))
-          setNewName('')
-          setNewNumber('')
+          setNewName(' ')
+          setNewNumber(' ')
         })
         setSuccessMessage(`'${newName}' successfully updated! `)
         setTimeout(() => {setSuccessMessage(null)}, 5000)
